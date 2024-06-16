@@ -10,7 +10,7 @@ class Solution:
                     new.append(max(temp[2*i], temp[2*i+1]))
             
             temp = new
-        
+
         return temp[0]
 
                 

@@ -45,3 +45,9 @@ Return the length of the shortest special non-empty subarray of nums, or return 
 - Array
 - Bit Manipulation
 - Sliding Window
+
+### Hint
+
+- For each nums[i], we can maintain each subarray’s bitwise OR result ending with it.
+- The property of bitwise OR is that it never unsets any bits and only sets new bits
+- So the number of different results for each nums[i] is at most the number of bits 32.

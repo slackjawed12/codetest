@@ -24,23 +24,23 @@ class Solution2:
     def minimumSubarrayLength(self, nums: list[int], k: int) -> int:
         bit = [-1 for _ in range(32)]
         n = len(nums)
-        j, cur, res = 0, 0, -1
-        for i in range(n):
-            cur |= nums[i]
+        tail, cur, res = 0, 0, -1
+        for head in range(n):
+            cur |= nums[head]
             for b in range(32):
-                if nums[i] & (1 << b): 
-                    bit[b] = i
-            while cur >= k and j <= i:
+                if nums[head] & (1 << b): 
+                    bit[b] = head
+            while cur >= k and tail <= head:
                 if res == -1:
-                    res = i - j +1
+                    res = head - tail +1
                 else:
-                  res = min(res, i - j + 1)
+                  res = min(res, head - tail + 1)
                 
                 for b in range(32):
-                    if nums[j] & (1 << b) and bit[b] == j:
+                    if nums[tail] & (1 << b) and bit[b] == tail:
                         bit[b] = -1
                         cur ^= (1 << b)
-                j += 1     
+                tail += 1     
 
         return res
 

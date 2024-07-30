@@ -9,7 +9,7 @@ class Solution:
         
         return result
 
-# optimized solution
+# optimized solution - greedy approach
 class Solution2:
     def maximumTripletValue(self, nums: list[int]) -> int:
         ans = 0

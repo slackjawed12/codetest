@@ -33,3 +33,4 @@ The value of a triplet of indices (i, j, k) is equal to (nums[i] - nums[j]) * nu
 ### Topics
 
 - Array
+- Greedy

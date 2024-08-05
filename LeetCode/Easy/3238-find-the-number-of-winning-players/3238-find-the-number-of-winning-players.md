@@ -50,3 +50,5 @@ Note that multiple players can win the game.
 - 0 <= yi <= 10
 
 ### Topics
+
+- Hash Table

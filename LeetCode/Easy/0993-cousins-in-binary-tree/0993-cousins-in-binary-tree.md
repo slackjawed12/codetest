@@ -37,3 +37,7 @@ Note that in a binary tree, the root node is at the depth 0, and children of eac
 - Depth-First Search
 - Breadth-First Search
 - Binary Tree
+
+###
+
+BFS로 풀면 depth 같게 루프 돌 수 있음

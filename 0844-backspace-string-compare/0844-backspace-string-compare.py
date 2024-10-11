@@ -1,15 +1,35 @@
 class Solution:
     def backspaceCompare(self, s: str, t: str) -> bool:
-        s_stack, t_stack = self.init(s), self.init(t)
-        return s_stack == t_stack
+        i, j = len(s)-1, len(t) -1
+        ci, cj = i, j
+        while i >= 0 or j >= 0:
+            ci = self.next(s, i)
+            cj = self.next(t, j)
+            if ci < 0 or cj < 0:
+                return ci < 0 and cj < 0
+            elif s[ci] != s[cj]:
+                return False
+
+            i = ci - 1
+            j = cj - 1
+
+        return True
         
-    def init(self, s:str) -> List[str]:
-        st = []
-        for c in s:
-            if c == '#':
-                if st:
-                    st.pop()
+    def next(self, s:str, i:int) -> int:
+        if i < 0:
+            return - 1
+        
+        back_cnt = 0
+        while i > 0:
+            cur = s[i]
+            if cur != '#' and back_cnt == 0:
+                break
+
+            if cur == '#':
+                back_cnt += 1
             else:
-                st.append(c)
+                back_cnt -= 1
         
-        return st
+            i -= 1
+
+        return i

@@ -1,26 +1,64 @@
+# 촌수계산
 import sys
-
-n = int(sys.stdin.readline().strip())
-a, b = list(map(int, sys.stdin.readline().strip().split()))
-m = int(sys.stdin.readline().strip())
-relations = [list(map(int, sys.stdin.readline().strip().split())) for _ in range(m)]
-
-graph = {x: [] for x in range(1, n + 1)}
-for relation in relations:
-    graph[relation[0]].append(relation[1])
-    graph[relation[1]].append(relation[0])
-
-ans = [-1]
-
-def dfs(graph, start, depth, visit, result):
-    if start == b:
-        result[0] = depth
-
-    for adj in graph[start]:
-        if not visit[adj]:
-            visit[adj] = True
-            dfs(graph, adj, depth + 1, visit, result)
+from typing import List, Dict
+from collections import deque
 
 
-dfs(graph, a, 0, [False] * (n + 1), ans)
-print(ans[0])
+class Graph:
+    def __init__(self, adj: Dict[int, List[int]]):
+        self.adj = adj
+
+    def dfs(self, cur: int, end: int) -> int:
+        visit = [-1] * (len(self.adj.keys()) + 1)
+        visit[cur] = 0
+        self.helper(cur, end, visit)
+        return visit[end]
+
+    def helper(self, cur: int, end: int, visit: List[int]):
+        if cur == end:
+            return
+
+        for n in self.adj[cur]:
+            if visit[n] == -1:
+                visit[n] = visit[cur] + 1
+                self.helper(n, end, visit)
+
+    def bfs(self, cur: int, end: int) -> int:
+        visit = [-1] * (len(self.adj.keys()) + 1)
+        q = deque([cur])
+        visit[cur] = 0
+        while q:
+            cur = q.popleft()
+            for n in self.adj[cur]:
+                if visit[n] == -1:
+                    visit[n] = visit[cur] + 1
+                    q.append(n)
+
+        return visit[end]
+
+
+class Solution:
+    def solve(self, total: int, start: int, end: int, info: List[List[int]]) -> int:
+        adj = {i: [] for i in range(1, total + 1)}
+        for x, y in info:
+            adj[x].append(y)
+            adj[y].append(x)
+
+        graph = Graph(adj)
+        result = graph.bfs(start, end)
+
+        return result
+
+
+def main():
+    n = int(sys.stdin.readline().strip())
+    a, b = list(map(int, sys.stdin.readline().strip().split()))
+    m = int(sys.stdin.readline().strip())
+    arr = [list(map(int, sys.stdin.readline().strip().split())) for i in range(m)]
+    sol = Solution()
+    answer = sol.solve(n, a, b, arr)
+    print(answer)
+
+
+if __name__ == '__main__':
+    main()

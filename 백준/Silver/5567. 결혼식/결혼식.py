@@ -1,37 +1,39 @@
+# 결혼식
 import sys
+from typing import List
 from collections import deque
 
 
-def init_graph(info_input, num):
-    adj = {n: [] for n in range(num + 1)}
-    for info in info_input:
-        adj[info[0]].append(info[1])
-        adj[info[1]].append(info[0])
+class Solution:
+    def solve(self, count: int, relations: List[List[int]]) -> int:
+        adj = {(i + 1): [] for i in range(count)}
+        for a, b in relations:
+            adj[a].append(b)
+            adj[b].append(a)
 
-    return adj
-
-
-def bfs(graph, num):
-    q = deque([])
-    visit = [0] * (num + 1)
-    visit[1] = 1
-    q.append(1)
-    while len(q) != 0:
-        cur_person = q.pop()
-        if visit[cur_person] > 2:
-            continue
-
-        for next_person in graph[cur_person]:
-            if visit[next_person] == 0:
-                visit[next_person] = visit[cur_person] + 1
-                q.append(next_person)
-    return len([v for v in visit if v == 2 or v == 3])
+        visit = [-1] * (count + 1)
+        q = deque([1])
+        visit[1] = 0
+        while q:
+            cur = q.popleft()
+            for nxt in adj[cur]:
+                if visit[nxt] == -1:
+                    visit[nxt] = visit[cur] + 1
+                    q.append(nxt)
+                    
+        return len([v for v in visit if v == 1 or v == 2])
 
 
-n = int(sys.stdin.readline().strip())
-m = int(sys.stdin.readline().strip())
-inputs = [list(map(int, sys.stdin.readline().strip().split())) for _ in range(m)]
+def main():
+    n = int(sys.stdin.readline().strip())
+    m = int(sys.stdin.readline().strip())
+    arr = [list(map(int, sys.stdin.readline().strip().split())) for _ in range(m)]
 
-graph = init_graph(inputs, n)
-result = bfs(graph, n)
-print(result)
+    sol = Solution()
+    answer = sol.solve(n, arr)
+
+    print(answer)
+
+
+if __name__ == '__main__':
+    main()

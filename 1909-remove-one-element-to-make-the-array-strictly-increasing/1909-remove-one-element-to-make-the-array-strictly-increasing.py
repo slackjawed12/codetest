@@ -1,21 +1,15 @@
 import heapq
 class Solution:
     def canBeIncreasing(self, nums: List[int]) -> bool:
-        store = []
-        heapq.heapify(store)
-        for n in nums:
-            if len(store) <= 1:
-                heapq.heappush(store, -n)
-                continue
-            
-            first, second = [-heapq.heappop(store) for i in range(2)]
-            if first >= n and second >= n:
-                return False
-            
-            heapq.heappush(store, -first)
-            heapq.heappush(store, -second)
-            heapq.heappush(store, -n)
+        for i, n in enumerate(nums):
+            l = [n for j, n in enumerate(nums) if j != i]
+            is_inc = True
+            for k in range(1,len(l)):
+                if l[k-1] >= l[k]:
+                    is_inc = False
+                    break
 
-        return True
+            if is_inc:
+                return True
         
-        
+        return False

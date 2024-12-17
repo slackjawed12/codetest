@@ -3,28 +3,17 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        def sort(lo: int, hi: int):
-            if hi <= lo:
-                return lo
-            
-            idx = partition(lo, hi)
-            sort(lo, idx-1)
-            sort(idx, hi)
+        zero, one = 0, 0
+        for n in nums:
+            if n == 0:
+                zero += 1
+            elif n == 1:
+                one += 1
         
-        def partition(lo:int, hi:int):
-            pivot = nums[(lo+hi)//2]
-            while lo <= hi:
-                while nums[lo] < pivot:
-                    lo += 1
-                while nums[hi] > pivot:
-                    hi -= 1
-                
-                if lo <= hi:
-                    nums[lo], nums[hi] = nums[hi], nums[lo]
-                    lo, hi = lo + 1, hi - 1
-
-            return lo
-            
-        sort(0, len(nums)-1)
-    
-        
+        for i in range(len(nums)):
+            if i < zero:
+                nums[i] = 0
+            elif zero <= i < zero+one:
+                nums[i] = 1
+            else:
+                nums[i] = 2

@@ -6,16 +6,27 @@
 #         self.right = right
 class Solution:
     def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        def invert(r1, r2, level):
-            if not r1 or not r2:
-                return
+        if root is None:
+            return root
+        
+        q = deque([])
+        q.append((root, 0))
+        while q:
+            cur, lev = q.popleft()
+            if cur is None:
+                continue
+                
+            q.append((cur.left, lev+1))
+            q.append((cur.right, lev+1))
 
-            if level % 2 == 0:
-                r2.val, r1.val = r1.val, r2.val
-            
-            invert(r1.left, r2.right, level + 1)
-            invert(r2.left, r1.right, level + 1)
-        
-        invert(root.left, root.right, 0)
-        
+            if lev % 2 != 0:
+                odds = [cur]
+                while q and q[0][1] == lev:
+                    q.append((q[0][0].left, lev+1))
+                    q.append((q[0][0].right, lev+1))
+                    odds.append(q.popleft()[0])
+                
+                for i in range(len(odds)//2):
+                    odds[i].val, odds[len(odds)-i-1].val = odds[len(odds)-i-1].val, odds[i].val
+
         return root
